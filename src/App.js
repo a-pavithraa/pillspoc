@@ -4,10 +4,10 @@ import React,{useContext} from 'react';
 import SearchForm from './components/SearchForm/SearchForm';
 import Layout from './components/UI/Layout';
 import Login from './pages/Login';
-import AuthContext from './store/auth-context';
+import { useSelector, useDispatch } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 function App() {
-  const ctx = useContext(AuthContext);
+  const loggedIn = useSelector((state) => state.login.isLoggedIn);
   return (
    
     <div className="App">
@@ -21,7 +21,7 @@ function App() {
           <Login />
         </Route>
         <Route path='/search' exact>
-         {ctx.isLoggedIn? <SearchForm />:<Login/>}
+         {isLoggedIn? <SearchForm />:<Login/>}
         </Route>
         </Switch>
         </Layout>
