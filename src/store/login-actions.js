@@ -1,5 +1,5 @@
 import { loginActions } from './login-slice';
-
+import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 export const login = (userName,password) => {
   return  (dispatch) => {

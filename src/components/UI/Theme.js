@@ -59,10 +59,11 @@ marginBottom:`20px`
      
       border: 0,
       borderRadius: 3,
-      
+      float:'left',
       color: 'white',
-      height: 30,
+      height: 40,
       padding: '0 30px',
+      marginTop:theme.spacing(10)
     }
    
   }));

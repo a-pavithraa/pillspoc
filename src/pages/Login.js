@@ -6,8 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import moduleClasses from './Login.module.scss';
 import { useHistory, useLocation } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import {login} from '../store/login-actions';
 
-import AuthContext from '../store/auth-context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +26,10 @@ const useStyles = makeStyles((theme) => ({
 const Login = ()=>{
     const classes = useStyles();
     const history = useHistory();
-    const context = useContext(AuthContext);
+    const dispatch = useDispatch();
+
+    const loggedIn = useSelector((state) => state.login.isLoggedIn);
+    const isInvalidCredential = useSelector((state) => state.login.isInvalidCredential);
     //const {isLoggedIn,isInvalidCredential}=context;
     const [userName,setUserName] =useState();
     const[password,setPassword]=useState();
@@ -40,18 +44,18 @@ const Login = ()=>{
     }
     useEffect(() => {
       console.log('use effect called');
-      if(context.isLoggedIn)
+      if(loggedIn)
       history.push("/search");
-    else if(context.isInvalidCredential){
+    else if(isInvalidCredential){
       alert('Invalid credentials');
     }
      
-    }, [context.isLoggedIn,context.isInvalidCredential])
+    }, [loggedIn,isInvalidCredential])
 
     const loginHandler = (event)=>{
         event.preventDefault();
         console.log(userName+","+password);
-        context.onLogin(userName,password);
+        dispatch(login(userName,password));
      
       
     }

@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import loginSlice from './login-slice';
+import stockServiceSlice from './stockservice-slice';
 
 
 const store = configureStore({
-  reducer: { loginSlice: loginSlice.reducer },
+  reducer: { login: loginSlice.reducer,stockService:stockServiceSlice.reducer },
 });
 
 export default store;
