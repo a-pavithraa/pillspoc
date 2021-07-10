@@ -86,8 +86,10 @@ const SearchForm  = ()=>{
         </Grid>
         </MuiPickersUtilsProvider>
        
-            <Grid container spacing={4}>
-                <StockTable/>
+            <Grid container spacing={8} m={10} >
+            <Grid item lg={12} >
+              {ticks && ticks!==undefined && <StockTable data={ticks}/>}  
+            </Grid>
             </Grid>
         </div>
     )

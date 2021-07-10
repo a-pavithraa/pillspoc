@@ -7,8 +7,8 @@ import moduleClasses from './Login.module.scss';
 import { useHistory, useLocation } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import {login} from '../store/login-actions';
-
+import AuthContext from '../store/auth-context';
+import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,10 +26,10 @@ const useStyles = makeStyles((theme) => ({
 const Login = ()=>{
     const classes = useStyles();
     const history = useHistory();
-    const dispatch = useDispatch();
+    
+    const context = useContext(AuthContext);
 
-    const loggedIn = useSelector((state) => state.login.isLoggedIn);
-    const isInvalidCredential = useSelector((state) => state.login.isInvalidCredential);
+   
     //const {isLoggedIn,isInvalidCredential}=context;
     const [userName,setUserName] =useState();
     const[password,setPassword]=useState();
@@ -42,20 +42,49 @@ const Login = ()=>{
       setPassword(event.target.value);
 
     }
-    useEffect(() => {
-      console.log('use effect called');
-      if(loggedIn)
-      history.push("/search");
-    else if(isInvalidCredential){
-      alert('Invalid credentials');
-    }
-     
-    }, [loggedIn,isInvalidCredential])
-
+   
     const loginHandler = (event)=>{
         event.preventDefault();
         console.log(userName+","+password);
-        dispatch(login(userName,password));
+       
+          var authenticationData = {
+            Username : userName,
+            Password : password,
+        };
+        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+        var poolData = { UserPoolId : 'us-east-1_DUfDYLnmA',
+            ClientId : '7sopkguq2mmi4vf7dhnet51kjn'
+        };
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+        var userData = {
+            Username : userName,
+            Pool : userPool
+        };
+        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+        
+         cognitoUser.authenticateUser(authenticationDetails, {
+            onSuccess: function (result) {
+                var accessToken = result.getAccessToken().getJwtToken();
+                console.log('success called');
+                var idToken = result.idToken.jwtToken;
+                localStorage.setItem("jwtToken",idToken);
+                context.onLogin(userName,password);
+                history.push("/search")
+               
+                /* Use the idToken for Logins Map when Federating User Pools with identity pools or when passing through an Authorization Header to an API Gateway Authorizer */
+              
+                
+            },
+        
+            onFailure: function(err) {
+              alert('Invalid credentials');
+              console.log(err);
+             
+            },
+        
+        });
+        
+       
      
       
     }

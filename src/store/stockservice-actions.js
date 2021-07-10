@@ -3,7 +3,7 @@ import {stockServiceActions} from './stockservice-slice';
 export const fetchTicks = () => {
     return async (dispatch) => {
       const fetchData = async () => {
-        
+        console.log('jwt'+localStorage.getItem("jwtToken"));
         const response = await fetch(
           'http://localhost:8080/api/ticks',{
             headers: {

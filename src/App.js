@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthContext from './store/auth-context';
 function App() {
-  const loggedIn = useSelector((state) => state.login.isLoggedIn);
+ 
   const ctx = useContext(AuthContext);
   return (
    
@@ -19,11 +19,16 @@ function App() {
         <Route path='/' exact>
           <Redirect to='/login' />
         </Route>
-        <Route path='/login' exact>
-          <Login />
-        </Route>
-        <Route path='/search' exact>
-         {loggedIn? <SearchForm />:<Login/>}
+       
+       
+        
+         <Route path='/login' exact>
+         <Login />
+       </Route>
+      
+        <Route path='/search'>
+          {ctx.isLoggedIn && <SearchForm />}
+          {!ctx.isLoggedIn && <Redirect to='/login' />}
         </Route>
         </Switch>
         </Layout>
