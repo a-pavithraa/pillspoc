@@ -18,7 +18,9 @@ const useStyles = makeStyles((theme) => ({
       
     },
     '& .MuiInput-input':{
-        paddingLeft: theme.spacing(4)
+        paddingLeft: theme.spacing(4),
+        boxShadow:"0 0 6px 0 #00a3ff"
+       
     }
   },
 }));
@@ -99,7 +101,7 @@ const Login = ()=>{
 >
   
 <Grid item xs={12}>
-<TextField required id="standard-required" label="User Name"   onChange={setUserNameChange}/>
+<TextField required id="standard-required" label="User Name"   onChange={setUserNameChange} />
     </Grid>
     <Grid item xs={12}>
     <TextField

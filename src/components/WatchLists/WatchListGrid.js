@@ -2,7 +2,7 @@ import React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
 
-const StockTable = (props)=>{
+const WatchListsGrid = (props)=>{
   /*const { data } = useDemoData({
     dataSet: 'Commodity',
     rowLength: 1000,
@@ -43,4 +43,4 @@ const StockTable = (props)=>{
       );
 }
 
-export default StockTable;
+export default WatchListsGrid;

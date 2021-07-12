@@ -76,8 +76,18 @@ marginBottom:`20px`
     selectEmpty: {
       marginTop: theme.spacing(2)
     },
+    tabClass: {
+      width: "100%",
+      marginTop:theme.spacing(10),
+      marginLeft:theme.spacing(8),
+      paddingLeft:theme.spacing(10),
+      backgroundColor:"#282c34",
+     
+    },
     smGridSpacing: {
-      width: "100%"
+      width: "100%",
+      marginTop:theme.spacing(5),
+      paddingLeft:theme.spacing(5)
     },
     
     headerStyle: {

@@ -1,6 +1,6 @@
 
 import React,{useEffect} from 'react';
-import Box from '@material-ui/core/Box';
+
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {useStyles} from '../components/UI/Theme';
@@ -9,88 +9,73 @@ import Button from '@material-ui/core/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import {fetchTicks} from '../store/stockservice-actions';
 import StockTable from '../components/StockTable/StockTable';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import TabPanel from '../components/UI/TabPanel';
 
+
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 
 const SearchForm  = ()=>{
     const classes = useStyles();
 
+    const [value, setValue] = React.useState(0);
    
-    const [selectedFromDate, setSelectedFromDate] = React.useState(new Date('2021-06-28T21:11:54'));
-    const [selectedToDate, setSelectedToDate] = React.useState(new Date('2021-06-28T21:11:54'));
     const ticks =  useSelector((state) => state.stockService.ticks);
     const dispatch = useDispatch();
+    useEffect(()=>{
+      console.log('fetch ticks called');
+      dispatch(fetchTicks());   
+  
+    },[]);
+
+    useEffect(()=>{
+      console.log('ticks changed');
+   
+  
+    },[ticks]);
+    const handleChange = (event, newValue) => {
+      setValue(newValue);
+    };
+    let details =<CircularProgress/>
+    if(ticks!==undefined &&  ticks.result)
+      details = <StockTable data={ticks.result[0].quotes}/> 
  
-
-  const handleFromDateChange = (date) => {
-    setSelectedFromDate(date);
- 
-  };
-
-  const searchHandler =()=>{
-
-  }
-  const handleToDateChange = (date) => {
-    setSelectedToDate(date);
-  };
-  useEffect(()=>{
-    dispatch(fetchTicks());   
-
-  },[dispatch]);
 
     return (
-     <div >
+     <div >  
+       <AppBar position="static" spacing={4} className={classes.tabClass}>
+  <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+    <Tab label="Tickers" {...a11yProps(0)} />
+    <Tab label="Watch Lists" {...a11yProps(1)} />
+    <Tab label="Crypto" {...a11yProps(2)} />
+  </Tabs>
+</AppBar>
+<TabPanel value={value} index={0}>
+<Grid container spacing={4} className={classes.smGridSpacing}>
+              <Grid item xs={12} sm={12} lg={12}>
+              { details}  
+                </Grid>
+              
+    </Grid>
+</TabPanel>
+<TabPanel value={value} index={1}>
+  Item Two
+</TabPanel>
+<TabPanel value={value} index={2}>
+  Item Three
+</TabPanel>      
            
-  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-  <Grid container spacing={4} >
-  <Grid item xs={12} sm={6} lg={3} >
-        <KeyboardDatePicker
-         
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Date picker inline"
-          value={selectedFromDate}
-          onChange={handleFromDateChange}
-       
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-        </Grid>
-        <Grid item xs={12} sm={6} lg={3} >
-        <KeyboardDatePicker
-         
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Date picker inline"
-          value={selectedToDate}
-          onChange={handleToDateChange}
-        
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-         </Grid>
-        <Grid item xs={12} sm={6} lg={3} >
-        <Button type="submit" className={classes.btnClass} variant="contained" color="primary" onClick={searchHandler}>
-            Search
-          </Button>
-          </Grid>
-        </Grid>
-        </MuiPickersUtilsProvider>
-       
-            <Grid container spacing={8} m={10} >
-            <Grid item lg={12} >
-              {ticks && ticks!==undefined && <StockTable data={ticks}/>}  
-            </Grid>
-            </Grid>
+            
         </div>
     )
 
