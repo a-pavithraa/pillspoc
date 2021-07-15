@@ -1,45 +1,31 @@
-import React from 'react';
-import { DataGrid } from '@material-ui/data-grid';
+import React,{useEffect} from 'react';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchWatchLists } from '../../store/stockservice-actions';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import WatchListsGrid  from './WatchListGrid';
 const WatchLists = (props)=>{
-  /*const { data } = useDemoData({
-    dataSet: 'Commodity',
-    rowLength: 1000,
-    maxColumns: 6,
-  });
-    console.log(data);*/
-    const columns =[{
-      field:"shortName",
-      headerName:"Name",
-      width:200
-    },{
-      field:"symbol",
-      headerName:"Symbol",
-      width:200
-    },{
-      field:"quoteType",
-      headerName:"Type",
-      width:200
-    },{
-      field:"regularMarketPreviousClose",
-      headerName:"Previous Close",
-      width:200
-    },{
-      field:"regularMarketPrice",   
-      headerName:"Price",
-      width:200
-    }];
+    const watchList = useSelector((state) => state.stockService.watchLists);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log('fetch watchList called');
+    dispatch(fetchWatchLists());
 
-    const data1 ={columns:columns,rows:props.data}
-    console.log('render called');
+  }, []);
 
-    
+  let details = <CircularProgress />
+  if (watchList !== undefined && watchList.result)
+    details = <WatchListsGrid data={watchList.result[0].portfolios} />
+
+
     
       return (
-        <div style={{ height: 400, width: '100%' }}>
-          <DataGrid pagination {...data1}  getRowId={(row) => row.symbol}/>
-        </div>
+        <Grid item xs={12} sm={12} lg={12}>
+            {details}
+            
+          </Grid>
       );
 }
 

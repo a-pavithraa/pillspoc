@@ -81,7 +81,7 @@ marginBottom:`20px`
       marginTop:theme.spacing(10),
       marginLeft:theme.spacing(8),
       paddingLeft:theme.spacing(10),
-      backgroundColor:"#282c34",
+      backgroundColor:"#282c34!important",
      
     },
     smGridSpacing: {
@@ -104,13 +104,7 @@ marginBottom:`20px`
       paddingBottom: "10px",
       display: "block",
       backgroundColor: "rgb(66,66,66)"
-      /*background: 'url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodâ€¦BoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==)',
-      background: '-moz-linear-gradient(left,#3a3633 93%,#2a2725 100%)',
-      background: '-webkit-gradient(linear,left top,right top,color-stop(93%,#3a3633),color-stop(100%,#2a2725))',
-      background: '-webkit-linear-gradient(left,#3a3633 93%,#2a2725 100%)',
-      background: '-o-linear-gradient(left,#3a3633 93%,#2a2725 100%)',
-      background: '-ms-linear-gradient(left,#3a3633 93%,#2a2725 100%)',
-      background: 'linear-gradient(to right,#3a3633 93%,#2a2725 100%)'*/
+     
     },
     progress: {
       margin: theme.spacing(2)
@@ -214,7 +208,28 @@ marginBottom:`20px`
     },
     tabs: {
       borderRight: `1px solid ${theme.palette.divider}`,
-    }
+    },
+    paper: {
+      position: 'absolute',
+      width: '100vh',
+      
+      backgroundColor: theme.palette.background.paper,
+      color:'white',
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+    customCard:{
+      background:'#002e4f',
+      boxShadow: '1px 5px 7px 0 rgba(4, 29, 55, 0.3)'
+    },
+    table: {
+      minWidth: 650,
+    },
+    
+  container: {
+    maxHeight: 440,
+  },
    
   }));
   

@@ -19,5 +19,9 @@
 .App-link {
   color: #61dafb;
 }
-
+.table-cell-trucate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 

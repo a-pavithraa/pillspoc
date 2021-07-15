@@ -38,7 +38,7 @@ const NavBar= ()=> {
           <Typography variant="h6" className={classes.title}>
             Stock Details
           </Typography>
-          {context.isLoggedIn  && <Button color="inherit" onClick={context.onLogout}>Logout</Button>}
+          {context.isLoggedIn  && <Button color="inherit" onClick={context.logout}>Logout</Button>}
         </Toolbar>
       </AppBar>
     </div>

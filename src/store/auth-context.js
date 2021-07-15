@@ -1,58 +1,92 @@
-import React, { useState, useEffect,useCallback } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-
+import React, { useState, useEffect, useCallback } from 'react';
+import {  useDispatch } from 'react-redux';
+import {stockServiceActions} from './stockservice-slice';
+let logoutTimer;
 
 const AuthContext = React.createContext({
+  token: '',
   isLoggedIn: false,
-  isInvalidCredential:false,
-  onLogout: () => {},
-  onLogin: (email, password) => {}
+  login: (token) => {},
+  logout: () => {},
 });
 
+const calculateRemainingTime = (expirationTime) => {
+  const currentTime = new Date().getTime();
+  const adjExpirationTime = new Date(expirationTime).getTime();
 
+  const remainingDuration = adjExpirationTime - currentTime;
 
+  return remainingDuration;
+};
+
+const retrieveStoredToken = () => {
+  const storedToken = localStorage.getItem('jwtToken');
+  const storedExpirationDate = localStorage.getItem('expirationTime');
+
+  const remainingTime = calculateRemainingTime(storedExpirationDate);
+
+  if (remainingTime <= 3600) {
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('expirationTime');
+    return null;
+  }
+
+  return {
+    token: storedToken,
+    duration: remainingTime,
+  };
+};
 
 export const AuthContextProvider = (props) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isInvalidCredential, setIsInvalidCredential] = useState(false);
-  const history = useHistory();
- 
-  useEffect(() => {
-    const storedUserLoggedInInformation = localStorage.getItem('isLoggedIn');
+  const tokenData = retrieveStoredToken();
+   const dispatch = useDispatch();
+  
+  let initialToken;
+  if (tokenData) {
+    initialToken = tokenData.token;
+  }
 
-    if (storedUserLoggedInInformation === '1') {
-      setIsLoggedIn(true);
+  const [token, setToken] = useState(initialToken);
+
+  const userIsLoggedIn = !!token;
+
+  const logoutHandler = useCallback(() => {
+    setToken(null);
+    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('expirationTime');
+    console.log('logout called');
+    if (logoutTimer) {
+      clearTimeout(logoutTimer);
     }
+    dispatch(stockServiceActions.logout());
   }, []);
 
-  const logoutHandler = () => {
-    localStorage.removeItem('isLoggedIn');
-    setIsLoggedIn(false);
-    setIsInvalidCredential(false);
-    localStorage.removeItem("jwtToken");
-   // history.replace("/login");
+  const loginHandler = (token, expirationTime) => {
+    setToken(token);
+    localStorage.setItem('jwtToken', token);   
+    localStorage.setItem('expirationTime', expirationTime);
+
+    const remainingTime = calculateRemainingTime(expirationTime);
+
+    logoutTimer = setTimeout(logoutHandler, remainingTime);
   };
- 
-  const loginHandler = (userName,password) => {
-    localStorage.setItem('isLoggedIn', '1');
-    setIsLoggedIn(true);
-    setIsInvalidCredential(false);
-    
-   
-   
-    console.log('login handler');
-   
+
+  useEffect(() => {
+    if (tokenData) {
+      console.log(tokenData.duration);
+      logoutTimer = setTimeout(logoutHandler, tokenData.duration);
+    }
+  }, [tokenData, logoutHandler]);
+
+  const contextValue = {
+    token: token,
+    isLoggedIn: userIsLoggedIn,
+    login: loginHandler,
+    logout: logoutHandler,
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        isLoggedIn: isLoggedIn,
-        isInvalidCredential: isInvalidCredential,
-        onLogout: logoutHandler,
-        onLogin: loginHandler,
-      }}
-    >
+    <AuthContext.Provider value={contextValue}>
       {props.children}
     </AuthContext.Provider>
   );

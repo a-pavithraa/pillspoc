@@ -68,9 +68,15 @@ const Login = ()=>{
             onSuccess: function (result) {
                 var accessToken = result.getAccessToken().getJwtToken();
                 console.log('success called');
+                console.log(result);
                 var idToken = result.idToken.jwtToken;
-                localStorage.setItem("jwtToken",idToken);
-                context.onLogin(userName,password);
+                localStorage.setItem('jwtToken', idToken);
+               
+                const expirationTime = new Date(
+                  new Date().getTime() + +3600 * 1000
+                );
+               
+                context.login(idToken,expirationTime);
                 history.push("/search")
                
                 /* Use the idToken for Logins Map when Federating User Pools with identity pools or when passing through an Authorization Header to an API Gateway Authorizer */

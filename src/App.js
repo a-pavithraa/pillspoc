@@ -7,9 +7,12 @@ import Login from './pages/Login';
 import { useSelector, useDispatch } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthContext from './store/auth-context';
+import Portfolio from './pages/Portfolio';
 function App() {
  
   const ctx = useContext(AuthContext);
+  console.log('loggedin==='+ctx.isLoggedIn);
+ 
   return (
    
     <div className="App">
@@ -17,17 +20,24 @@ function App() {
         <Layout>
           <Switch>
         <Route path='/' exact>
-          <Redirect to='/login' />
+        {ctx.isLoggedIn && <SearchForm />}
+          {!ctx.isLoggedIn && <Redirect to='/login' />}
         </Route>
        
        
         
          <Route path='/login' exact>
-         <Login />
+         {ctx.isLoggedIn && <Redirect to='/search' />}
+          {!ctx.isLoggedIn && <Login/>}
        </Route>
       
         <Route path='/search'>
           {ctx.isLoggedIn && <SearchForm />}
+          {!ctx.isLoggedIn && <Redirect to='/login' />}
+        </Route>
+
+        <Route path='/portfolio'>
+          {ctx.isLoggedIn && <Portfolio />}
           {!ctx.isLoggedIn && <Redirect to='/login' />}
         </Route>
         </Switch>
