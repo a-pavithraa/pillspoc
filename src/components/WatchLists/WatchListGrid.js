@@ -1,47 +1,20 @@
-import React,{useState,useCallback} from 'react';
+import React,{useCallback} from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import Tooltip from '@material-ui/core/Tooltip';
-import Modal from '@material-ui/core/Modal';
-import { useStyles } from '../../components/UI/Theme';
-import WatchListDetails from './WatchListDetails';
-
-function rand() {
-    return Math.round(Math.random() * 20) - 10;
-  }
-function getModalStyle() {
-    const top = 50 + rand();
-    const left = 50 + rand();
-  
-    return {
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: `translate(-${top}%, -${left}%)`,
-    };
-  }
-const displayModal = (pfId,userId)=>{
-     
-}
+import { useHistory } from 'react-router-dom';
+import CustomToolbar from '../UI/GridCustomToolbar';
 
 const WatchListsGrid = (props)=>{
-  /*const { data } = useDemoData({
-    dataSet: 'Commodity',
-    rowLength: 1000,
-    maxColumns: 6,
-  });
-    console.log(data);*/
-    const [openDialog, setOpenDialog] = useState(false);
-    const [modalStyle] = useState(getModalStyle);  
-    const classes = useStyles();
-    const [rowVals,setSelectedRowVals] = useState({});
+ 
+    const history = useHistory();
     const clickHandler = useCallback((event,row)=>{
-        event.preventDefault();        
-        setSelectedRowVals({pfId:row.pfId,userId:row.userId});
-        setOpenDialog(true);
-    },[]);
+        event.preventDefault();   
+        history.push("/portfolio?userId="+row.userId+'&pfId='+row.pfId+'&name='+row.name) 
+         
+       
+    },[history]);
 
-    const handleClose=()=>{
-        setOpenDialog(false);
-    }
+   
     const columns =[{
       field:"name",
       headerName:"Name",
@@ -80,24 +53,17 @@ const WatchListsGrid = (props)=>{
     }];
 
     const data1 ={columns:columns,rows:props.data}
-    const body = (
-        <div style={modalStyle}  className={classes.paper}>
-          
-          <WatchListDetails pfId ={rowVals.pfId} userId={rowVals.userId}/>
-         
-        </div>
-      );
+   
     
 
     
     
       return (
         <div style={{ height: 400, width: '100%' }}>
-          <DataGrid pagination {...data1}  getRowId={(row) => row.name}/>
-           <Modal  open={openDialog}  onClose={handleClose}  fullWidth
-  maxWidth="sm">
-        {body}
-        </Modal></div>
+          <DataGrid pagination {...data1}  getRowId={(row) => row.name} components={{
+          Toolbar: CustomToolbar,
+        }}/>
+         </div>
        
       );
 }

@@ -1,11 +1,7 @@
-import { createMuiTheme,lighten } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import { makeStyles } from "@material-ui/core/styles";
 
-import TextField from '@material-ui/core/TextField';
-import indigo from '@material-ui/core/colors/indigo';
-import grey from '@material-ui/core/colors/grey';
 
-import { shadows } from '@material-ui/system';
 
 export const darkTheme = createMuiTheme({
     palette: {
@@ -37,6 +33,7 @@ export const darkTheme = createMuiTheme({
       boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
       color: 'white',
       height: 48,
+      fontSize:"12px",
       padding: '0 30px',
       '& .MuiButton':{
         margin: theme.spacing(2),
@@ -77,11 +74,11 @@ marginBottom:`20px`
       marginTop: theme.spacing(2)
     },
     tabClass: {
-      width: "100%",
+      width: "98%",
       marginTop:theme.spacing(10),
       marginLeft:theme.spacing(8),
       paddingLeft:theme.spacing(10),
-      backgroundColor:"#282c34!important",
+      backgroundColor:"#002e4f!important",
      
     },
     smGridSpacing: {
@@ -191,21 +188,9 @@ marginBottom:`20px`
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
       },
+      backgroundColor: "transparent!important"
     },
-    menuButton: {
-      marginRight: theme.spacing(2),
-      [theme.breakpoints.up('sm')]: {
-        display: 'none',
-      },
-    },
-    toolbar: theme.mixins.toolbar,
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-    },
+   
     tabs: {
       borderRight: `1px solid ${theme.palette.divider}`,
     },
@@ -221,7 +206,8 @@ marginBottom:`20px`
     },
     customCard:{
       background:'#002e4f',
-      boxShadow: '1px 5px 7px 0 rgba(4, 29, 55, 0.3)'
+      boxShadow: 'inset 0px 15px 30px rgba(0, 16, 38, 0.5)',
+      borderRadius:"10px"
     },
     table: {
       minWidth: 650,
@@ -230,6 +216,15 @@ marginBottom:`20px`
   container: {
     maxHeight: 440,
   },
+  header:{
+    paddingLeft: "20px!important",
+    fontWeight: "bolder",
+    fontSize:"30px",
+    float:"left",
+    paddingBottom: "10px",
+    
+
+  }
    
   }));
   

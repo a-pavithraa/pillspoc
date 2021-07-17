@@ -32,7 +32,7 @@ const NavBar= ()=> {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.appBar}>
         <Toolbar>
         
           <Typography variant="h6" className={classes.title}>

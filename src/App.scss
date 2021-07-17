@@ -6,7 +6,7 @@
 
 
 .App-header {
-  background-color: #282c34;
+  background-color: #193a58;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -24,4 +24,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+.MuiAppBar-colorPrimary {
+  color: #fff;
+  background-color: #031121!important;
+}
+.MuiButton-textPrimary {
+  color: #fff;
+  font-weight: bolder;
+}
